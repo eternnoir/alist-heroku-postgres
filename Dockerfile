@@ -1,7 +1,14 @@
 FROM xhofe/alist:latest
 LABEL MAINTAINER="i@nn.ci"
 WORKDIR /opt/alist/
+ARG DATABASE_URL
 
-EXPOSE 5244
+WORKDIR /opt/alist/
+ENV DB_TYPE postgres
+ENV DB_SLL_MODE require
+ADD main /main
+RUN chmod +x /main
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-CMD [ "./alist", "server", "--no-prefix" ]
+ENTRYPOINT ["sh", "/entrypoint.sh"]
